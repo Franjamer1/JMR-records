@@ -15,6 +15,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRole = void 0;
 // @Entity({ name: "users" })
 // class User {
 //     @PrimaryGeneratedColumn()
@@ -42,6 +43,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typeorm_1 = require("typeorm");
 const Credential_1 = __importDefault(require("./Credential"));
 const Appointment_1 = __importDefault(require("./Appointment"));
+var UserRole;
+(function (UserRole) {
+    UserRole["ADMIN"] = "admin";
+    UserRole["USER"] = "user";
+})(UserRole || (exports.UserRole = UserRole = {}));
 let User = class User {
 };
 __decorate([
@@ -64,6 +70,14 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], User.prototype, "nDni", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: "enum",
+        enum: UserRole,
+        default: UserRole.USER
+    }),
+    __metadata("design:type", String)
+], User.prototype, "role", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => Credential_1.default, { cascade: true }),
     (0, typeorm_1.JoinColumn)(),

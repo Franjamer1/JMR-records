@@ -8,11 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginUser = exports.createUser = exports.getUserById = exports.getAllUsers = void 0;
-// import { createUserService, getUserService, deleteUserService } from "../services/userServices";
-const userServices_1 = require("../services/userServices");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const index_1 = require("../config/index");
 const credentialService_1 = require("../services/credentialService");
+const userServices_1 = require("../services/userServices");
+const User_1 = require("../entities/User");
 // GET /users => Obtener el listado de todos los usuarios.
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -42,9 +47,9 @@ exports.getUserById = getUserById;
 // POST /users/register => Registro de un nuevo usuario.
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, email, birthdate, nDni, username, password } = req.body;
+        const { name, email, birthdate, nDni, username, password, role } = req.body;
         const newUser = yield (0, userServices_1.createUserService)({
-            name, email, birthdate, nDni, username, password
+            name, email, birthdate, nDni, username, password, role
         });
         res.status(201).json({ message: "Usuario creado con éxito" });
     }
@@ -55,18 +60,53 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.createUser = createUser;
 // POST /users/login => Login del usuario a la aplicación.
+// export const loginUser = async (req: Request<{}, {}, ICreateCredentialDto>, res: Response) => {
+//     try {
+//         const { username, password } = req.body;
+//         const credential: ICredential = await validateCredential({
+//             username, password
+//         });
+//         const user: User | null = await findUserByCredentialId(credential.id);
+//         res.status(200).json({ loggin: true, user, message: "Usuario logueado correctamente" });
+//     } catch (error: any) {
+//         res.status(400).json({ message: error.message });
+//     };
+// };
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, password } = req.body;
-        const credential = yield (0, credentialService_1.validateCredential)({
-            username, password
-        });
+        // 1️⃣ Validamos credenciales
+        const credential = yield (0, credentialService_1.validateCredential)({ username, password });
+        // 2️⃣ Buscamos al usuario asociado
         const user = yield (0, userServices_1.findUserByCredentialId)(credential.id);
-        res.status(200).json({ loggin: true, user, message: "Usuario logueado correctamente" });
+        if (!user)
+            throw new Error("Usuario no encontrado");
+        // 3️⃣ Preparamos payload del token
+        const payload = {
+            userId: user.id,
+            role: user.role || User_1.UserRole.USER, // 👈 garantizamos que exista un rol
+        };
+        // 4️⃣ Configuramos opciones del token
+        const options = {
+            expiresIn: parseInt(index_1.JWT_EXPIRES_IN) || 3600, // 1h por defecto
+        };
+        // 5️⃣ Firmamos el JWT
+        const token = jsonwebtoken_1.default.sign(payload, index_1.JWT_SECRET, options);
+        // 6️⃣ Respondemos al cliente
+        res.status(200).json({
+            login: true,
+            message: "Usuario logueado correctamente",
+            token,
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+            },
+        });
     }
     catch (error) {
         res.status(400).json({ message: error.message });
     }
-    ;
 });
 exports.loginUser = loginUser;

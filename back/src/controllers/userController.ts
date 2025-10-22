@@ -6,7 +6,7 @@ import { createUserService, findUserByCredentialId, getAllUsersService, getUserB
 // import { createUserService, getUserService, deleteUserService } from "../services/userServices";
 import ICreateCredentialDto from "../dto/CredentialDto";
 import ICredential from "../interfaces/ICredential";
-import ICreateUserDto from "../dto/UserDto";
+import ICreateUserDto from "../dto/userDto";
 import User from "../entities/User";
 import { UserRole } from "../entities/User";
 
