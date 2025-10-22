@@ -6,7 +6,7 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 const usersRouter = Router();
 
 usersRouter.get("/", authMiddleware, getAllUsers);
-usersRouter.get("/:id", getUserById);
+usersRouter.get("/:id", authMiddleware, getUserById);
 usersRouter.post("/register", createUser);
 usersRouter.post("/login", loginUser);
 

@@ -2,9 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const appointmentsController_1 = require("../controllers/appointmentsController");
+const authMiddleware_1 = require("../middlewares/authMiddleware");
 const appointmentRouter = (0, express_1.Router)();
-appointmentRouter.get("/", appointmentsController_1.getAllAppointment);
-appointmentRouter.get("/:turnId", appointmentsController_1.getAppointmentByid);
-appointmentRouter.post("/schedule", appointmentsController_1.newAppointment);
-appointmentRouter.put("/cancel/:turnId", appointmentsController_1.cancelAppointment);
+appointmentRouter.get("/", authMiddleware_1.authMiddleware, appointmentsController_1.getAllAppointment);
+appointmentRouter.get("/:turnId", authMiddleware_1.authMiddleware, appointmentsController_1.getAppointmentByid);
+appointmentRouter.post("/schedule", authMiddleware_1.authMiddleware, appointmentsController_1.newAppointment);
+appointmentRouter.put("/cancel/:turnId", authMiddleware_1.authMiddleware, appointmentsController_1.cancelAppointment);
 exports.default = appointmentRouter;

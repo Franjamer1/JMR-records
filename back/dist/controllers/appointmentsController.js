@@ -12,13 +12,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.cancelAppointment = exports.newAppointment = exports.getAppointmentByid = exports.getAllAppointment = void 0;
 const appointmentsService_1 = require("../services/appointmentsService");
 //Get / appointments => obtener el listado de todos los turnos 
+// export const getAllAppointment = async (req: Request, res: Response) => {
+//     try {
+//         const allAppointments: Appointment[] = await getAllAppointmentService();
+//         res.status(200).json(allAppointments);
+//     } catch (error: any) {
+//         res.status(400).json({ error: error.message })
+//     }
+// }
 const getAllAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allAppointments = yield (0, appointmentsService_1.getAllAppointmentService)();
-        res.status(200).json(allAppointments);
+        // Validamos que el usuario exista en el request (protegido por authMiddleware)
+        if (!req.user) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+        // Obtenemos el usuario del JWT
+        const userPayload = req.user;
+        // Creamos un objeto compatible con la función getAppointmentsForUser
+        const user = {
+            id: userPayload.userId,
+            role: userPayload.role || "user",
+        };
+        const appointments = yield (0, appointmentsService_1.getAppointmentsForUser)(user);
+        res.status(200).json(appointments);
     }
     catch (error) {
-        res.status(400).json({ error: error.message });
+        // Evitamos error de TypeScript accediendo a "message"
+        const message = error instanceof Error ? error.message : String(error);
+        res.status(500).json({ message });
     }
 });
 exports.getAllAppointment = getAllAppointment;

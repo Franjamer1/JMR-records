@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.findUserByCredentialId = exports.createUserService = exports.getUserByIdService = exports.getAllUsersService = void 0;
+const User_1 = require("../entities/User");
 const repositories_1 = require("../repositories");
 const credentialService_1 = require("./credentialService");
 const getAllUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -27,17 +28,29 @@ const getUserByIdService = (id) => __awaiter(void 0, void 0, void 0, function* (
     return user;
 });
 exports.getUserByIdService = getUserByIdService;
+// export const createUserService = async (createUserDto: ICreateUserDto) => {
+//     //creamos usuario
+//     const newUser: User = userModel.create(createUserDto);
+//     await userModel.save(newUser);
+//     //Creacion de la credencial
+//     const newCredential: Credential = await createCredential({
+//         username: createUserDto.username,
+//         password: createUserDto.password,
+//     });
+//     //Asociacion de newUser con newCredential
+//     newUser.credential = newCredential;
+//     await userModel.save(newUser);
+//     return newUser;
+// };
 const createUserService = (createUserDto) => __awaiter(void 0, void 0, void 0, function* () {
-    //creamos usuario
-    const newUser = repositories_1.userModel.create(createUserDto);
-    yield repositories_1.userModel.save(newUser);
-    //Creacion de la credencial
+    var _a;
+    //creamos credencial
     const newCredential = yield (0, credentialService_1.createCredential)({
         username: createUserDto.username,
         password: createUserDto.password,
     });
-    //Asociacion de newUser con newCredential
-    newUser.credential = newCredential;
+    //creacion de usuario
+    const newUser = repositories_1.userModel.create(Object.assign(Object.assign({}, createUserDto), { role: (_a = createUserDto.role) !== null && _a !== void 0 ? _a : User_1.UserRole.USER, credential: newCredential }));
     yield repositories_1.userModel.save(newUser);
     return newUser;
 });

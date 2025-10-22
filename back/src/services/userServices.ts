@@ -1,4 +1,4 @@
-import ICreateUserDto from "../dto/UserDto";
+import ICreateUserDto from "../dto/userDto";
 import Credential from "../entities/Credential";
 import User, { UserRole } from "../entities/User";
 import { userModel } from "../repositories";

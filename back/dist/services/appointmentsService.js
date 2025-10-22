@@ -9,7 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancelAppointmentService = exports.getAppointmentByIdService = exports.getAllAppointmentService = exports.createAppointmentService = void 0;
+exports.cancelAppointmentService = exports.getAppointmentByIdService = exports.getAppointmentsForUser = exports.getAllAppointmentService = exports.createAppointmentService = void 0;
+const User_1 = require("../entities/User");
 const repositories_1 = require("../repositories");
 const createAppointmentService = (scheduleturnDto) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("datos recibidos en createAppointmentService", scheduleturnDto); //log depuracion
@@ -31,6 +32,21 @@ const getAllAppointmentService = () => __awaiter(void 0, void 0, void 0, functio
     return allAppointments;
 });
 exports.getAllAppointmentService = getAllAppointmentService;
+//traer appointments para el admin, modificar para usar jwt
+const getAppointmentsForUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
+    if (user.role === User_1.UserRole.ADMIN) {
+        // admin ve todas las citas
+        return repositories_1.appointmentsModel.find({ relations: ["user"] });
+    }
+    else {
+        // usuario normal solo ve sus citas
+        return repositories_1.appointmentsModel.find({
+            where: { userId: user.id },
+            relations: ["user"]
+        });
+    }
+});
+exports.getAppointmentsForUser = getAppointmentsForUser;
 const getAppointmentByIdService = (turnId) => __awaiter(void 0, void 0, void 0, function* () {
     const appointment = yield repositories_1.appointmentsModel.findOneBy({ id: turnId, });
     if (!appointment)
