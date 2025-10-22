@@ -1,0 +1,75 @@
+.registerContainer {
+    background: linear-gradient(to right, rgba(252, 235, 249, 0.1), rgba(252, 235, 249, 0.1));
+    color: whitesmoke;
+    text-align: center;
+    align-items: center;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    min-width: 30%;
+    min-height: 50px;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.h2 {
+    font-size: xx-large;
+    color: whitesmoke;
+
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-size: x-large;
+    justify-content: center;
+    align-items: center;
+}
+
+.formContain,
+.input {
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+    justify-content: center;
+    gap: 0rem;
+    text-align: center;
+}
+
+.input {
+    height: 1.9rem;
+    background-color: rgba(128, 128, 128, 0.5);
+    color: white;
+    width: 100%;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    padding: 1rem;
+    width: 150px;
+    background: linear-gradient(to left, rgb(0, 0, 0, 0.534), rgba(0, 0, 0, 0.534));
+    color: aliceblue;
+    font-size: large;
+}
+
+.button:hover {
+    background: linear-gradient(to right, rgb(0, 0, 0, 0.534), rgba(0, 0, 0, 0.534));
+    transform: scale(1.1);
+    transition: 300ms;
+
+}
+
+.errorSpan {
+    color: brown;
+    font-size: 12px;
+}
+
+/* * {
+    outline: 1px solid red;
+} */

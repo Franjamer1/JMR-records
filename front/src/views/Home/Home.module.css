@@ -1,0 +1,21 @@
+.home {
+    color: aliceblue;
+    display: flex;
+    /* flex-direction: column; */
+    /* align-items: center; */
+    gap: 1rem;
+    justify-content: space-between;
+    /* flex-wrap: wrap; */
+    /* margin: 2rem; */
+}
+
+.turnContainer {
+    height: 100vh;
+    width: 30%;
+    display: flex;
+    background: linear-gradient(to left, rgb(0, 0, 0, 0.534), rgba(0, 0, 0, 0.534));
+    padding: 1rem;
+    gap: 3rem;
+    text-align: center;
+    flex-direction: column;
+}

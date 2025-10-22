@@ -1,0 +1,69 @@
+.FormContainer {
+    background: linear-gradient(to right, rgba(252, 235, 249, 0.1), rgba(252, 235, 249, 0.1));
+    color: whitesmoke;
+    text-align: center;
+    align-items: center;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    min-width: 30%;
+    min-height: 50px;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.FormContainer h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.FormGroup {
+    margin-bottom: 15px;
+}
+
+.FormGroup label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.FormGroup input {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #8f1515;
+    border-radius: 4px;
+    background-color: rgba(128, 128, 128, 0.5);
+
+}
+
+.boton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    padding: 1rem;
+    width: 150px;
+    background: linear-gradient(to left, rgb(0, 0, 0, 0.534), rgba(0, 0, 0, 0.534));
+    color: aliceblue;
+    font-size: large;
+}
+
+.boton:hover {
+    background: linear-gradient(to right, rgb(0, 0, 0, 0.534), rgba(0, 0, 0, 0.534));
+    transform: scale(1.1);
+    transition: 300ms;
+
+}
+
+
+
+.input[type] {
+    height: 1.9rem;
+    background-color: rgba(128, 128, 128, 0.5);
+    color: white;
+    width: 100%;
+}
