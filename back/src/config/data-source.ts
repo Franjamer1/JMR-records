@@ -12,7 +12,7 @@ export const AppDataSource = new DataSource({
     password: DB_PASS,
     database: DB_NAME,
     synchronize: true, //puede pasarse a true
-    dropSchema: true, //idem
+    dropSchema: false, //idem
     logging: ["error"], //true
     entities: [User, Appointment, Credential],
     subscribers: [],
