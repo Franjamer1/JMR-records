@@ -1,6 +1,8 @@
+import { error } from "console";
 import ICreateUserDto from "../dto/userDto";
 import Credential from "../entities/Credential";
 import User, { UserRole } from "../entities/User";
+import { AuthPayload } from "../middlewares/authMiddleware";
 import { userModel } from "../repositories";
 import { createCredential } from "./credentialService";
 
@@ -10,31 +12,30 @@ export const getAllUsersService = async (): Promise<User[]> => {
     return allUsers;
 };
 
-export const getUserByIdService = async (id: number): Promise<User> => {
+export const getUserByIdService = async (
+    id: number,
+    requestinUser: AuthPayload
+): Promise<User> => {
+    //si no hay usuario autenticado
+    if (!requestinUser) throw new Error("Unautorized");
+
+    //si el user aut, no es admin y quiere ver otro user
+    if (requestinUser.role !== UserRole.ADMIN && requestinUser.userId !== id) {
+        throw new Error("Forbidden - no tienes permiso para ver este usuario");
+    }
+
+    //Buscar el usuario solicitado
     const user: User | null = await userModel.findOne({
         where: { id },
-        relations: ["appointments"]
+        relations: ["appointments"],
     })
 
     if (!user) throw new Error("Usuario no encontrado");
+
     return user;
-};
+}
 
-// export const createUserService = async (createUserDto: ICreateUserDto) => {
-//     //creamos usuario
-//     const newUser: User = userModel.create(createUserDto);
-//     await userModel.save(newUser);
-//     //Creacion de la credencial
-//     const newCredential: Credential = await createCredential({
-//         username: createUserDto.username,
-//         password: createUserDto.password,
-//     });
-//     //Asociacion de newUser con newCredential
-//     newUser.credential = newCredential;
-//     await userModel.save(newUser);
 
-//     return newUser;
-// };
 export const createUserService = async (createUserDto: ICreateUserDto) => {
     //creamos credencial
     const newCredential: Credential = await createCredential({

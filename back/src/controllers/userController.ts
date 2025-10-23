@@ -3,12 +3,12 @@ import jwt, { SignOptions } from "jsonwebtoken";
 import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/index";
 import { validateCredential } from "../services/credentialService";
 import { createUserService, findUserByCredentialId, getAllUsersService, getUserByIdService } from "../services/userServices";
-// import { createUserService, getUserService, deleteUserService } from "../services/userServices";
 import ICreateCredentialDto from "../dto/CredentialDto";
 import ICredential from "../interfaces/ICredential";
 import ICreateUserDto from "../dto/userDto";
 import User from "../entities/User";
 import { UserRole } from "../entities/User";
+import { AuthRequest } from "../middlewares/authMiddleware";
 
 // GET /users => Obtener el listado de todos los usuarios.
 export const getAllUsers = async (req: Request, res: Response) => {
@@ -21,16 +21,25 @@ export const getAllUsers = async (req: Request, res: Response) => {
 };
 
 // GET /users/:id => Obtener el detalle de un usuario específico.
-export const getUserById = async (req: Request<{ id: string }, {}, {}>, res: Response) => {
+export const getUserById = async (req: AuthRequest, res: Response) => {
     try {
         const { id } = req.params;
-        const user: User = await getUserByIdService(Number(id));
+        const user: User = await getUserByIdService(Number(id), req.user!);
+
         return res.status(200).json(user);
-        // res.status(200).json({ message: "Obtiene detalle de un usuario especifico" });
     } catch (error: any) {
-        res.status(400).json({ message: error.message })
-    };
-};
+        const status =
+            error.message === "Unauthorized"
+                ? 401
+                : error.message.startsWith("Forbidden")
+                    ? 403
+                    : 400;
+
+        res.status(status).json({ message: error.message });
+    }
+}
+
+
 
 // POST /users/register => Registro de un nuevo usuario.
 export const createUser = async (req: Request<{}, {}, ICreateUserDto>, res: Response) => {
@@ -44,23 +53,6 @@ export const createUser = async (req: Request<{}, {}, ICreateUserDto>, res: Resp
         res.status(400).json({ message: error.message });
     };
 };
-
-// POST /users/login => Login del usuario a la aplicación.
-// export const loginUser = async (req: Request<{}, {}, ICreateCredentialDto>, res: Response) => {
-//     try {
-//         const { username, password } = req.body;
-//         const credential: ICredential = await validateCredential({
-//             username, password
-//         });
-//         const user: User | null = await findUserByCredentialId(credential.id);
-//         res.status(200).json({ loggin: true, user, message: "Usuario logueado correctamente" });
-//     } catch (error: any) {
-
-//         res.status(400).json({ message: error.message });
-//     };
-
-// };
-
 
 export const loginUser = async (req: Request<{}, {}, ICreateCredentialDto>, res: Response) => {
     try {
