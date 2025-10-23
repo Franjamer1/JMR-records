@@ -1,7 +1,7 @@
 🗓️ Appointment Management System
 
 A full-stack appointment management system with secure authentication, role-based access, and CRUD operations for managing appointments.
-Built with NestJS, MongoDB, and JWT for a professional backend structure.
+Built with Express, PostgreSQL, and JWT for a professional backend structure.
 
 🚀 Technologies Used
 
@@ -20,18 +20,14 @@ Frontend: React + Redux
 Testing: Postman / Jest
 
 ⚙️ Installation & Local Setup
-
-Clone the repository
-
+1. Clone the repository
 git clone <REPO_URL>
-cd <back>
+cd <PROJECT_NAME>
 
-Install dependencies
-
+2. Install dependencies
 npm install
 
-
-Configure environment variables
+3. Configure environment variables
 
 Create a .env file in the root directory with:
 
@@ -52,109 +48,98 @@ JWT_EXPIRES_IN=<jwt_expiration_in_seconds>
 # Password encryption
 BCRYPT_SALT_ROUNDS=<bcrypt_salt_rounds>
 
-
-Run the server
-
+4. Run the server
 npm run start:dev
 
 
 ✅ Server running at: http://localhost:3000
 
 🛠️ API Endpoints
-
 👤 Users
 Method	Route	Description	Access
 GET	/users	List all users	admin
 GET	/users/:id	Get user by ID	admin / own
 POST	/users/register	Register new user	public
 POST	/auth/login	Login user (JWT)	public
-
 📅 Appointments
 Method	Route	Description	Access
 GET	/turns	List all appointments	admin
 GET	/turns/:id	Get appointment by ID	admin / own
-POST /turns/schedule	Create new appointment	user / admin
+POST	/turns/schedule	Create new appointment	user / admin
 PUT	/turns/cancel/:turnid	Update appointment	user / admin
 🔑 Request / Response Examples
 🧾 Register User
-
 POST /users/register
-
 {
-    "name": "user",
-    "email": "user@gmail.com",
-    "birthdate": "24/02/1995",
-    "nDni": "0000000000",
-    "username": "user",
-    "password": "user",
-    "role": "user"
+  "name": "user",
+  "email": "user@gmail.com",
+  "birthdate": "24/02/1995",
+  "nDni": "0000000000",
+  "username": "user",
+  "password": "user",
+  "role": "user"
 }
 
 🔐 Login
-
 POST /auth/login
-
 {
-    "username": "user",
-    "password": "user"
+  "username": "user",
+  "password": "user"
 }
+
 
 Response:
 
 {
-    "login": true,
-    "message": "Usuario logueado correctamente",
-    "token": <JWTtoken>,
-    "user": {
-        "id": 1,
-        "name": "user",
-        "email": "user@gmail.com",
-        "role": "user"
-    }
+  "login": true,
+  "message": "Usuario logueado correctamente",
+  "token": "<JWT_TOKEN>",
+  "user": {
+    "id": 1,
+    "name": "user",
+    "email": "user@gmail.com",
+    "role": "user"
+  }
 }
 
 📆 Create Appointment
-
 POST /turns/schedule
-
-Headers:
-Authorization: Bearer <JWT_TOKEN>
-
-Body:
+Headers: { "Authorization": "Bearer <JWT_TOKEN>" }
 
 {
-    "date": "2025-10-22",
-    "time": "20:00",
-    "userId": "1"
+  "date": "2025-10-22",
+  "time": "20:00",
+  "userId": "1"
 }
+
 
 Response:
 
 {
-    "date": "2025-10-22",
-    "time": "20:00",
-    "userId": "userId",
+  "date": "2025-10-22",
+  "time": "20:00",
+  "userId": "userId",
+  "id": 1,
+  "status": "active",
+  "user": {
     "id": 1,
-    "status": "active",
-    "user": {
-        "id": 1,
-        "name": "user",
-        "email": "user@gmail.com",
-        "birthdate": "24/02/1995",
-        "nDni": "000000000",
-        "role": "user"
-    }
+    "name": "user",
+    "email": "user@gmail.com",
+    "birthdate": "24/02/1995",
+    "nDni": "000000000",
+    "role": "user"
+  }
 }
 
 🔒 Authentication & Role Management
 
 All appointment routes require a valid JWT.
 
-Roles:
+Roles
 
-user: can create, update, and delete their own appointments
+user: can create, update, and delete their own appointments.
 
-admin: can manage all users and all appointments
+admin: can manage all users and all appointments.
 
 ✨ Features
 
@@ -168,6 +153,7 @@ admin: can manage all users and all appointments
 🧩 Backend Project Structure (Layered Architecture)
 
 This project follows a Layered Architecture, separating concerns into controllers, services, and repositories to maintain scalability, testability, and clean code organization.
+
 I decided to use this architecture because I wanted to build the project without using NestJS, in order to practice Express and structure a backend manually — focusing on understanding how each layer interacts and how to organize code in a professional way.
 
 src/
@@ -184,13 +170,13 @@ src/
  ├── main.ts
 .env
 package.json
-psconfig.json
+tsconfig.json
 
 🧠 Author
 
-Developed by Francisco Patiño
-📫 LinkedIn Profile : https://www.linkedin.com/in/francisco-pati%C3%B1o-b702b12b5/
+Developed by: Francisco Patiño
+📫 LinkedIn: https://www.linkedin.com/in/francisco-pati%C3%B1o-b702b12b5/
 
-💻 GitHub Profile: https://github.com/Franjamer1
+💻 GitHub: https://github.com/Franjamer1
 
 💼 Portfolio: https://franjamer1.github.io/portfolio/
