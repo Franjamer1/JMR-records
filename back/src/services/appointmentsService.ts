@@ -2,6 +2,7 @@ import Appointment from "../entities/Appointment";
 import User, { UserRole } from "../entities/User";
 import IScheduleAppointmentDto from "../dto/IScheduleAppointmentDto";
 import { appointmentsModel, userModel } from "../repositories";
+import { AuthPayload } from "../middlewares/authMiddleware";
 
 export const createAppointmentService = async (scheduleturnDto: IScheduleAppointmentDto): Promise<Appointment> => {
     console.log("datos recibidos en createAppointmentService", scheduleturnDto)//log depuracion
@@ -37,11 +38,29 @@ export const getAppointmentsForUser = async (user: User): Promise<Appointment[]>
     }
 };
 
-export const getAppointmentByIdService = async (turnId: number): Promise<Appointment> => {
-    const appointment: Appointment | null = await appointmentsModel.findOneBy({ id: turnId, });
+// export const getAppointmentByIdService = async (turnId: number): Promise<Appointment> => {
+//     const appointment: Appointment | null = await appointmentsModel.findOneBy({ id: turnId, });
+//     if (!appointment) throw Error("Turno inexistente");
+//     return appointment;
+// };
+export const getAppointmentByIdService = async (
+    turnId: number,
+    requestingUser: AuthPayload,
+): Promise<Appointment> => {
+    const appointment: Appointment | null = await appointmentsModel.findOne({
+        where: { id: turnId },
+        relations: ["user"],
+    });
+
     if (!appointment) throw Error("Turno inexistente");
+
+    //si no es admin y no es dueño del turno
+    if (requestingUser.role !== UserRole.ADMIN && appointment.user.id !== requestingUser.userId) {
+        throw Error("Forbidden - no tienes permiso para ver este turno");
+    }
+
     return appointment;
-};
+}
 
 export const cancelAppointmentService = async (
     turnId: number
