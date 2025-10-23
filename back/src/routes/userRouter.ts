@@ -6,8 +6,8 @@ import { requireRole } from "../middlewares/roleMiddleware";
 
 const usersRouter = Router();
 
-usersRouter.get("/", authMiddleware, requireRole(["ADMIN"]), getAllUsers);
-usersRouter.get("/:id", authMiddleware, requireRole(["ADMIN"]), getUserById);
+usersRouter.get("/", authMiddleware, requireRole(["admin"]), getAllUsers);
+usersRouter.get("/:id", authMiddleware, requireRole(["user", "admin"]), getUserById);
 usersRouter.post("/register", createUser);
 usersRouter.post("/login", loginUser);
 
