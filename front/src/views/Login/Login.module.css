@@ -33,7 +33,7 @@
 .input {
     display: flex;
     flex-direction: column;
-    width: 340px;
+    width: 300px;
     justify-content: center;
     gap: 1rem;
     text-align: center;

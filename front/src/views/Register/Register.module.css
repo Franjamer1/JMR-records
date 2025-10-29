@@ -27,19 +27,22 @@
     font-size: x-large;
     justify-content: center;
     align-items: center;
+    /* outline: 1px solid red; */
+    width: 300px;
 }
 
 .formContain,
 .input {
     display: flex;
     flex-direction: column;
-    width: 340px;
+    width: 100%;
     justify-content: center;
     gap: 0rem;
     text-align: center;
 }
 
 .input {
+    display: flex;
     height: 1.9rem;
     background-color: rgba(128, 128, 128, 0.5);
     color: white;
