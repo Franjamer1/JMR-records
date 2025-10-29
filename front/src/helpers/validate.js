@@ -16,13 +16,13 @@ export const validate = (formData) => {
         errors.email = "Ingresa un email válido (ej: ejemplo@gmail.com)";
     }
 
-    if (!formData.birthdate) {
-        errors.birthdate = "La fecha de nacimiento es requerida";
-    }
+    // if (!formData.birthdate) {
+    //     errors.birthdate = "La fecha de nacimiento es requerida";
+    // }
 
-    if (!formData.nDni) {
-        errors.nDni = "El DNI es requerido";
-    }
+    // if (!formData.nDni) {
+    //     errors.nDni = "El DNI es requerido";
+    // }
 
     if (!formData.password) {
         errors.password = "La contraseña es requerida";
