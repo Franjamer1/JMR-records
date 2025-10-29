@@ -1,7 +1,4 @@
 "use strict";
-// import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-// import Credential from "./Credential";
-// import Appointment from "./Appointment";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -16,30 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserRole = void 0;
-// @Entity({ name: "users" })
-// class User {
-//     @PrimaryGeneratedColumn()
-//     id!: number;
-//     @Column()
-//     name!: string;
-//     @Column()
-//     email!: string;
-//     @Column()
-//     birthdate!: string;
-//     @Column()
-//     nDni!: string;
-//     //User 1:1 Credential
-//     @OneToOne(() => Credential)
-//     @JoinColumn()
-//     credential!: Credential;
-//     //User 1:N Appointment
-//     @OneToMany(
-//         () => Appointment,
-//         (appointment) => appointment.userId
-//     )
-//     appointments!: Appointment[];
-// }
-// export default User;
 const typeorm_1 = require("typeorm");
 const Credential_1 = __importDefault(require("./Credential"));
 const Appointment_1 = __importDefault(require("./Appointment"));
@@ -62,14 +35,6 @@ __decorate([
     (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], User.prototype, "birthdate", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], User.prototype, "nDni", void 0);
 __decorate([
     (0, typeorm_1.Column)({
         type: "enum",

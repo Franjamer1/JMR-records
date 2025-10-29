@@ -47,10 +47,22 @@ const getAppointmentsForUser = (user) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getAppointmentsForUser = getAppointmentsForUser;
-const getAppointmentByIdService = (turnId) => __awaiter(void 0, void 0, void 0, function* () {
-    const appointment = yield repositories_1.appointmentsModel.findOneBy({ id: turnId, });
+// export const getAppointmentByIdService = async (turnId: number): Promise<Appointment> => {
+//     const appointment: Appointment | null = await appointmentsModel.findOneBy({ id: turnId, });
+//     if (!appointment) throw Error("Turno inexistente");
+//     return appointment;
+// };
+const getAppointmentByIdService = (turnId, requestingUser) => __awaiter(void 0, void 0, void 0, function* () {
+    const appointment = yield repositories_1.appointmentsModel.findOne({
+        where: { id: turnId },
+        relations: ["user"],
+    });
     if (!appointment)
         throw Error("Turno inexistente");
+    //si no es admin y no es dueño del turno
+    if (requestingUser.role !== User_1.UserRole.ADMIN && appointment.user.id !== requestingUser.userId) {
+        throw Error("Forbidden - no tienes permiso para ver este turno");
+    }
     return appointment;
 });
 exports.getAppointmentByIdService = getAppointmentByIdService;

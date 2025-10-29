@@ -4,8 +4,8 @@ interface IUser {
     id: number,
     name: string,
     email: string,
-    birthdate: string,
-    nDni: string,//o number????????????
+    // birthdate: string,
+    // nDni: string,
     credentialsId: number,
     role: UserRole,
 };

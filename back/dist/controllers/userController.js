@@ -34,14 +34,17 @@ exports.getAllUsers = getAllUsers;
 const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const user = yield (0, userServices_1.getUserByIdService)(Number(id));
+        const user = yield (0, userServices_1.getUserByIdService)(Number(id), req.user);
         return res.status(200).json(user);
-        // res.status(200).json({ message: "Obtiene detalle de un usuario especifico" });
     }
     catch (error) {
-        res.status(400).json({ message: error.message });
+        const status = error.message === "Unauthorized"
+            ? 401
+            : error.message.startsWith("Forbidden")
+                ? 403
+                : 400;
+        res.status(status).json({ message: error.message });
     }
-    ;
 });
 exports.getUserById = getUserById;
 // POST /users/register => Registro de un nuevo usuario.
@@ -59,19 +62,6 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     ;
 });
 exports.createUser = createUser;
-// POST /users/login => Login del usuario a la aplicación.
-// export const loginUser = async (req: Request<{}, {}, ICreateCredentialDto>, res: Response) => {
-//     try {
-//         const { username, password } = req.body;
-//         const credential: ICredential = await validateCredential({
-//             username, password
-//         });
-//         const user: User | null = await findUserByCredentialId(credential.id);
-//         res.status(200).json({ loggin: true, user, message: "Usuario logueado correctamente" });
-//     } catch (error: any) {
-//         res.status(400).json({ message: error.message });
-//     };
-// };
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { username, password } = req.body;

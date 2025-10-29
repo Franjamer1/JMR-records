@@ -18,30 +18,24 @@ const getAllUsersService = () => __awaiter(void 0, void 0, void 0, function* () 
     return allUsers;
 });
 exports.getAllUsersService = getAllUsersService;
-const getUserByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserByIdService = (id, requestinUser) => __awaiter(void 0, void 0, void 0, function* () {
+    //si no hay usuario autenticado
+    if (!requestinUser)
+        throw new Error("Unautorized");
+    //si el user aut, no es admin y quiere ver otro user
+    if (requestinUser.role !== User_1.UserRole.ADMIN && requestinUser.userId !== id) {
+        throw new Error("Forbidden - no tienes permiso para ver este usuario");
+    }
+    //Buscar el usuario solicitado
     const user = yield repositories_1.userModel.findOne({
         where: { id },
-        relations: ["appointments"]
+        relations: ["appointments"],
     });
     if (!user)
         throw new Error("Usuario no encontrado");
     return user;
 });
 exports.getUserByIdService = getUserByIdService;
-// export const createUserService = async (createUserDto: ICreateUserDto) => {
-//     //creamos usuario
-//     const newUser: User = userModel.create(createUserDto);
-//     await userModel.save(newUser);
-//     //Creacion de la credencial
-//     const newCredential: Credential = await createCredential({
-//         username: createUserDto.username,
-//         password: createUserDto.password,
-//     });
-//     //Asociacion de newUser con newCredential
-//     newUser.credential = newCredential;
-//     await userModel.save(newUser);
-//     return newUser;
-// };
 const createUserService = (createUserDto) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     //creamos credencial

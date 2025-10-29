@@ -1,6 +1,4 @@
 "use strict";
-// import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-// import User from "./User";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -14,25 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// @Entity({ name: "appointments" })
-// class Appointment {
-//     @PrimaryGeneratedColumn()
-//     id!: number;
-//     @Column()
-//     date!: Date;//o string
-//     @Column()
-//     time!: string;
-//     @Column()
-//     userId!: number;
-//     @Column({
-//         default: "active",
-//     })
-//     status!: string;
-//     //Appointment N:1 User
-//     @ManyToOne(() => User, (user) => user.appointments)
-//     @JoinColumn({ name: "userId" })
-//     user!: User;
-// }
 // export default Appointment;
 const typeorm_1 = require("typeorm");
 const User_1 = __importDefault(require("./User"));

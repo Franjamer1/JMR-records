@@ -19,11 +19,11 @@ class User {
     @Column({ unique: true })
     email!: string;
 
-    @Column()
-    birthdate!: string;
+    // @Column()
+    // birthdate!: string;
 
-    @Column()
-    nDni!: string;
+    // @Column()
+    // nDni!: string;
 
     @Column({
         type: "enum",

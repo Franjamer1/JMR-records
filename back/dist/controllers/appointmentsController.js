@@ -44,16 +44,33 @@ const getAllAppointment = (req, res) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.getAllAppointment = getAllAppointment;
 //Get /appointments/:turnId => Obtener detalle de turno especifico
+// export const getAppointmentByid = async (req: Request<{ turnId: string }, {}, {}>, res: Response) => {
+//     const { turnId } = req.params;
+//     try {
+//         const appointment = await getAppointmentByIdService(Number(turnId));
+//         res.status(200).json(appointment);
+//     } catch (error: any) {
+//         res.status(400).json({ error: error.message })
+//     };
+// };
 const getAppointmentByid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { turnId } = req.params;
     try {
-        const appointment = yield (0, appointmentsService_1.getAppointmentByIdService)(Number(turnId));
+        if (!req.user)
+            throw new Error("Unauthorized");
+        const appointment = yield (0, appointmentsService_1.getAppointmentByIdService)(Number(turnId), req.user);
         res.status(200).json(appointment);
     }
     catch (error) {
-        res.status(400).json({ error: error.message });
+        const status = error.message === "Forbidden - no tienes permiso para ver este turno"
+            ? 403
+            : error.message === "Turno inexistente"
+                ? 404
+                : error.message === "Unauthorized"
+                    ? 401
+                    : 400;
+        res.status(status).json({ message: error.message });
     }
-    ;
 });
 exports.getAppointmentByid = getAppointmentByid;
 //POST /appointments/schedule => Agendar un nuevo turno:
