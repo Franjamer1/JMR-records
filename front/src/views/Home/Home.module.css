@@ -1,21 +1,65 @@
 .home {
     color: aliceblue;
     display: flex;
-    /* flex-direction: column; */
-    /* align-items: center; */
-    gap: 1rem;
     justify-content: space-between;
-    /* flex-wrap: wrap; */
-    /* margin: 2rem; */
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 1rem;
 }
 
+/* Contenedor del texto y formulario */
 .turnContainer {
-    height: 100vh;
-    width: 30%;
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
     display: flex;
-    background: linear-gradient(to left, rgb(0, 0, 0, 0.534), rgba(0, 0, 0, 0.534));
-    padding: 1rem;
-    gap: 3rem;
-    text-align: center;
     flex-direction: column;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.534), rgba(0, 0, 0, 0.534));
+    padding: 1.5rem;
+    gap: 2rem;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    border-radius: 1rem;
+}
+
+/* El carousel también se adapta */
+.home> :first-child {
+    flex: 2;
+    min-width: 300px;
+    max-width: 900px;
+}
+
+/* 🔹 Responsive: de 777px para abajo */
+@media (max-width: 777px) {
+    .home {
+        flex-direction: column;
+        justify-content: center;
+        /* 🔸 Centra verticalmente */
+        align-items: center;
+        /* 🔸 Centra horizontalmente */
+        flex-wrap: wrap;
+        /* 🔸 Permite que los elementos se apilen bien */
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .home>* {
+        width: 90%;
+        /* 🔸 Cada elemento ocupa el 90% del ancho */
+        max-width: 600px;
+    }
+
+    .turnContainer {
+        width: 90%;
+        max-width: 500px;
+        height: auto;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
 }

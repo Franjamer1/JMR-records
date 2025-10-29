@@ -105,20 +105,54 @@ const Form = () => {
         });
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     try {
+    //         const response = await axios.post('http://localhost:3000/turns/schedule', {
+    //             date: formData.date,
+    //             time: formData.time,
+    //             userId: userActive.id // Enviar el ID del usuario desde el store
+    //         });
+
+    //         if (response.status === 201) {
+    //             toast.success('Turno creado con éxito');
+    //             dispatch(addUserAppointments(response.data));
+    //             e.target.reset(); // Limpiar el formulario después de enviar
+    //         } else {
+    //             toast.error('No se pudo crear el turno');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error al crear turno:', error);
+    //         toast.error('Error al crear turno. Por favor, intenta nuevamente.');
+    //     }
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const token = localStorage.getItem("token"); // 🔑 obtenemos el token guardado
+
         try {
-            const response = await axios.post('http://localhost:3000/turns/schedule', {
-                date: formData.date,
-                time: formData.time,
-                userId: userActive.id // Enviar el ID del usuario desde el store
-            });
+            console.log("Token enviado al backend:", token);
+            const response = await axios.post(
+                'http://localhost:3000/turns/schedule',
+                {
+                    date: formData.date,
+                    time: formData.time,
+                    userId: userActive.id // Enviar el ID del usuario desde el store
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}` // 👈 enviamos el token al backend
+                    }
+                }
+            );
 
             if (response.status === 201) {
                 toast.success('Turno creado con éxito');
                 dispatch(addUserAppointments(response.data));
-                e.target.reset(); // Limpiar el formulario después de enviar
+                e.target.reset();
             } else {
                 toast.error('No se pudo crear el turno');
             }

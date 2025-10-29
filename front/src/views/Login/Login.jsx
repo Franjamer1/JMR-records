@@ -47,17 +47,62 @@ const Login = ({ onLogin }) => {
         setForm({ ...form, [name]: value });
     };
 
+    // const postData = async () => {
+    //     try {
+    //         const response = await axios.post("http://localhost:3000/users/login", form);
+
+    //         if (response.status === 200 && response.data.login) {
+    //             // Guardar el token en localStorage
+    //             localStorage.setItem("token", response.data.token);
+
+    //             // Guardar el usuario en Redux
+    //             dispatch(addUser(response.data.user));
+
+    //             toast.success(response.data.message); // "Usuario logueado correctamente"
+    //             playokSound();
+    //             onLogin();
+    //             setTimeout(() => {
+    //                 navigate('/home');
+    //             }, 1500);
+    //         } else {
+    //             toast.error("Usuario o contraseña incorrectos");
+    //             playfailSound();
+    //         }
+    //     } catch (error) {
+    //         console.log("Error del servidor", error);
+    //         playfailSound();
+    //         toast.error("Error al intentar iniciar sesión");
+    //     }
+    // };
+
     const postData = async () => {
         try {
             const response = await axios.post("http://localhost:3000/users/login", form);
 
-            if (response.status === 200) {
-                dispatch(addUser(response.data.user))
-                toast.success("Login exitoso");
+            if (response.status === 200 && response.data.login) {
+                const { token, user, message } = response.data;
+
+                // 1️⃣ Guardar token y usuario en localStorage
+                localStorage.setItem("token", token);
+                localStorage.setItem("user", JSON.stringify(user));
+
+                // 2️⃣ Guardar usuario en Redux
+                dispatch(addUser(user));
+
+                // 3️⃣ Mostrar toast y sonido
+                toast.success(message);
                 playokSound();
-                onLogin(); // Actualiza el estado de autenticación en el componente padre (App.jsx)
+
+                // 4️⃣ Llamar a onLogin pasando el rol
+                onLogin(user.role);
+
+                // 5️⃣ Redirigir según rol
                 setTimeout(() => {
-                    navigate('/home'); // Redirige al usuario al Login después de mostrar el toast
+                    if (user.role === "admin") {
+                        navigate("/admin/home");
+                    } else {
+                        navigate("/home");
+                    }
                 }, 1500);
             } else {
                 toast.error("Usuario o contraseña incorrectos");
@@ -69,6 +114,7 @@ const Login = ({ onLogin }) => {
             toast.error("Error al intentar iniciar sesión");
         }
     };
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -125,3 +171,4 @@ const Login = ({ onLogin }) => {
 };
 
 export default Login;
+

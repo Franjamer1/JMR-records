@@ -31,18 +31,44 @@ function MyAppointments() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await axios.get(`http://localhost:3000/users/${userData.id}`);
+    //             dispatch(addUserAppointments(response.data.appointments));
+    //             // setAppointments(response.data.appointments)
+    //         } catch (error) {
+    //             console.error("Error fetching data", error)
+    //         }
+    //     };
+    //     !userData.name ? navigate("/") : fetchData();
+    // }, []);
     useEffect(() => {
+        if (!userData.name) {
+            navigate("/");
+            return;
+        }
+
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/users/${userData.id}`);
+                const token = localStorage.getItem("token");
+                const response = await axios.get(
+                    `http://localhost:3000/users/${userData.id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
                 dispatch(addUserAppointments(response.data.appointments));
-                // setAppointments(response.data.appointments)
             } catch (error) {
-                console.error("Error fetching data", error)
+                console.error("Error fetching data", error);
             }
         };
-        !userData.name ? navigate("/") : fetchData();
-    }, []);
+
+        fetchData();
+    }, [userData, navigate]);
 
 
     return (
