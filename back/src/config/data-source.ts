@@ -1,21 +1,53 @@
+// import { DataSource } from "typeorm";
+// import { DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER } from "./envs";
+// import User from "../entities/User";
+// import Appointment from "../entities/Appointment";
+// import Credential from "../entities/Credential";
+
+// export const AppDataSource = new DataSource({
+//     type: "postgres",
+//     host: DB_HOST,
+//     port: Number(DB_PORT),
+//     username: DB_USER,
+//     password: DB_PASS,
+//     database: DB_NAME,
+//     synchronize: true, //puede pasarse a true
+//     dropSchema: false, //idem
+//     logging: ["error"], //true
+//     entities: [User, Appointment, Credential],
+//     subscribers: [],
+//     migrations: [],
+// })
+
 import { DataSource } from "typeorm";
-import { DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER } from "./envs";
+import { DATABASE_URL, DB_HOST, DB_NAME, DB_PASS, DB_PORT, DB_USER } from "./envs";
 import User from "../entities/User";
 import Appointment from "../entities/Appointment";
 import Credential from "../entities/Credential";
 
-export const AppDataSource = new DataSource({
-    type: "postgres",
-    host: DB_HOST,
-    port: Number(DB_PORT),
-    username: DB_USER,
-    password: DB_PASS,
-    database: DB_NAME,
-    synchronize: true, //puede pasarse a true
-    dropSchema: false, //idem
-    logging: ["error"], //true
-    entities: [User, Appointment, Credential],
-    subscribers: [],
-    migrations: [],
-})
+const isProduction = !!DATABASE_URL;
 
+export const AppDataSource = new DataSource(
+    isProduction
+        ? {
+            type: "postgres",
+            url: DATABASE_URL, // Neon connection string
+            synchronize: false,
+            logging: ["error"],
+            ssl: {
+                rejectUnauthorized: false, // obligatorio para Neon
+            },
+            entities: [User, Appointment, Credential],
+        }
+        : {
+            type: "postgres",
+            host: DB_HOST,
+            port: Number(DB_PORT),
+            username: DB_USER,
+            password: DB_PASS,
+            database: DB_NAME,
+            synchronize: true,
+            logging: ["error"],
+            entities: [User, Appointment, Credential],
+        }
+);
