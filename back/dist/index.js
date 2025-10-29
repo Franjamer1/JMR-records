@@ -9,12 +9,9 @@ const data_source_1 = require("./config/data-source");
 require("reflect-metadata");
 data_source_1.AppDataSource.initialize()
     .then(() => {
-    console.log(`Base de datos conectada en puerto ${envs_1.DB_PORT}`);
+    console.log("✅ Base de datos conectada correctamente");
     server_1.default.listen(envs_1.PORT, () => {
-        console.log(`Servidor escuchando en el puerto ${envs_1.PORT}`);
+        console.log(`🚀 Servidor escuchando en el puerto ${envs_1.PORT}`);
     });
 })
-    .catch((error) => console.log(error));
-// server.listen(PORT, () => {
-//     console.log(`Servidor escuchando en el puerto ${PORT}`);
-// });
+    .catch((error) => console.error("❌ Error al conectar la base de datos:", error));
