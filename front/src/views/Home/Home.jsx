@@ -1,21 +1,3 @@
-// import NavBar from "../../components/NavBar/NavBar";
-// import Carousel from "../../components/carousel/carousel";
-// import styles from "./Home.module.css"
-
-// function Home() {
-//     return (
-//         <div className={styles.home}>
-//             {/* <NavBar /> */}
-//             <h1>SOLICITA TU TURNO</h1>
-//             <p>Solicita tu turno para grabaciones vocales, guitarras, bajo, piano, vientos, percusiones. Reserva para producciones completas, mezcla y mastering</p>
-
-//             <Carousel />
-//         </div >
-//     )
-// };
-
-// export default Home;
-
 import React, { useEffect } from "react";
 import Carousel from "../../components/carousel/carousel";
 import styles from "./Home.module.css";

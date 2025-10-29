@@ -5,6 +5,8 @@ import styles from './Form.module.css';
 import { addUserAppointments } from '../../redux/reducer';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from "../../config/api";
+
 
 const Form = () => {
     const dispatch = useDispatch();
@@ -29,8 +31,8 @@ const Form = () => {
 
         try {
             console.log("Token enviado al backend:", token);
-            const response = await axios.post(
-                'http://localhost:3000/turns/schedule',
+            const response = await api.post(
+                '/turns/schedule',
                 {
                     date: formData.date,
                     time: formData.time,

@@ -7,6 +7,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom";
 import { addUserAppointments, cancelAppointmentAction } from "../../redux/reducer";
+import api from "../../config/api";
 
 // Función para formatear la fecha a formato argentino
 const formatToArgentinaDate = (dateString) => {
@@ -31,18 +32,6 @@ function MyAppointments() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await axios.get(`http://localhost:3000/users/${userData.id}`);
-    //             dispatch(addUserAppointments(response.data.appointments));
-    //             // setAppointments(response.data.appointments)
-    //         } catch (error) {
-    //             console.error("Error fetching data", error)
-    //         }
-    //     };
-    //     !userData.name ? navigate("/") : fetchData();
-    // }, []);
     useEffect(() => {
         if (!userData.name) {
             navigate("/");
@@ -52,8 +41,8 @@ function MyAppointments() {
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await axios.get(
-                    `http://localhost:3000/users/${userData.id}`,
+                const response = await api.get(
+                    `/users/${userData.id}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`

@@ -7,6 +7,7 @@ import styles from "./Register.module.css"
 import { useNavigate } from "react-router-dom";
 import okSound from "../../assets/sounds/okSound.mp3"
 import failSound from "../../assets/sounds/failSound.mp3"
+import api from "../../config/api";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -52,7 +53,7 @@ const Register = () => {
 
     const postData = async () => {
         try {
-            const response = await axios.post("http://localhost:3000/users/register", form);
+            const response = await api.post("/users/register", form);
 
             if (response.status === 201) {
                 toast.success("Usuario registrado correctamente");

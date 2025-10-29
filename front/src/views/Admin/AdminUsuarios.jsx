@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import styles from "./AdminLayout.module.css";
+import api from "../../config/api";
 
 const AdminUsuarios = () => {
     const [usuarios, setUsuarios] = useState([]);
@@ -10,7 +11,7 @@ const AdminUsuarios = () => {
         const fetchUsuarios = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await axios.get("http://localhost:3000/users", {
+                const response = await api.get("/users", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setUsuarios(response.data);

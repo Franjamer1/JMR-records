@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./AdminLayout.module.css"; // Reutilizamos estilos de layout y sidebar
 import Appointment from "../../components/Appointment/Appointment"; // Reutilizamos card de turnos
+import api from "../../config/api";
 
 const AdminHome = () => {
     const [latestTurnos, setLatestTurnos] = useState([]);
@@ -13,7 +14,7 @@ const AdminHome = () => {
                 const token = localStorage.getItem("token");
 
                 // Obtener los últimos 5 turnos
-                const turnosRes = await axios.get("http://localhost:3000/turns", {
+                const turnosRes = await api.get("/turns", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 // Ordenamos por fecha ascendente y tomamos los 5 próximos
@@ -23,7 +24,7 @@ const AdminHome = () => {
                 setLatestTurnos(sortedTurnos.slice(0, 5));
 
                 // Obtener total de usuarios
-                const usersRes = await axios.get("http://localhost:3000/users", {
+                const usersRes = await api.get("/users", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setTotalUsuarios(usersRes.data.length);

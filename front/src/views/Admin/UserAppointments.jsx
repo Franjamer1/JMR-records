@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Appointment from "../../components/Appointment/Appointment";
 import styles from "./AdminLayout.module.css";
+import api from "../../config/api";
 
 const UserAppointments = () => {
     const { id } = useParams(); // ID del usuario seleccionado
@@ -15,7 +16,7 @@ const UserAppointments = () => {
                 const token = localStorage.getItem("token");
 
                 // Obtener datos del usuario
-                const userRes = await axios.get(`http://localhost:3000/users/${id}`, {
+                const userRes = await api.get(`/users/${id}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setUserName(userRes.data.name);

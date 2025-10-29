@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Appointment from "../../components/Appointment/Appointment";
 import styles from "./AdminLayout.module.css";
+import api from "../../config/api";
 
 const AdminTurnos = () => {
     const [turnos, setTurnos] = useState([]);
@@ -10,7 +11,7 @@ const AdminTurnos = () => {
         const fetchTurnos = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await axios.get("http://localhost:3000/turns", {
+                const response = await api.get("/turns", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 

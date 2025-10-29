@@ -8,6 +8,7 @@ import okSound from "../../assets/sounds/okSound.mp3"
 import failSound from "../../assets/sounds/failSound.mp3"
 import { useDispatch, /*useSelector*/ } from "react-redux";
 import { addUser } from "../../redux/reducer";
+import api from "../../config/api";
 
 const Login = ({ onLogin }) => {
 
@@ -47,37 +48,9 @@ const Login = ({ onLogin }) => {
         setForm({ ...form, [name]: value });
     };
 
-    // const postData = async () => {
-    //     try {
-    //         const response = await axios.post("http://localhost:3000/users/login", form);
-
-    //         if (response.status === 200 && response.data.login) {
-    //             // Guardar el token en localStorage
-    //             localStorage.setItem("token", response.data.token);
-
-    //             // Guardar el usuario en Redux
-    //             dispatch(addUser(response.data.user));
-
-    //             toast.success(response.data.message); // "Usuario logueado correctamente"
-    //             playokSound();
-    //             onLogin();
-    //             setTimeout(() => {
-    //                 navigate('/home');
-    //             }, 1500);
-    //         } else {
-    //             toast.error("Usuario o contraseña incorrectos");
-    //             playfailSound();
-    //         }
-    //     } catch (error) {
-    //         console.log("Error del servidor", error);
-    //         playfailSound();
-    //         toast.error("Error al intentar iniciar sesión");
-    //     }
-    // };
-
     const postData = async () => {
         try {
-            const response = await axios.post("http://localhost:3000/users/login", form);
+            const response = await api.post("/users/login", form);
 
             if (response.status === 200 && response.data.login) {
                 const { token, user, message } = response.data;

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { cancelAppointmentAction } from "../../redux/reducer";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import api from "../../config/api";
 
 const Appointment = ({ id, date, time, userName, status, onCancel, adminView = false }) => {
     const dispatch = useDispatch();
@@ -12,8 +13,8 @@ const Appointment = ({ id, date, time, userName, status, onCancel, adminView = f
     const cancelAppointment = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await axios.put(
-                `http://localhost:3000/turns/cancel/${id}`,
+            const response = await api.put(
+                `/turns/cancel/${id}`,
                 {},
                 {
                     headers: {
